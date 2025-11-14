@@ -161,7 +161,7 @@ apps:
         compatible: null
         packages: null
         commands: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+          curl -o- https://gh-proxy.org/https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
           export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
           source ~/.bashrc
@@ -660,7 +660,7 @@ apps:
         commands: |
           echo "Installing Wine (64-Bit with WoW64) ..."
           cd ~/.acu/cache
-          url="https://github.com/Kron4ek/Wine-Builds/releases/download/10.3"
+          url="https://gh-proxy.org/https://github.com/Kron4ek/Wine-Builds/releases/download/10.3"
           pkg="wine-10.3-amd64-wow64"
           curl -LJO \${url}/\${pkg}.tar.xz
           tar -xf \${pkg}.tar.xz
@@ -692,7 +692,7 @@ apps:
         commands: |
           echo "Installing Wine (64-Bit with WoW64) ..."
           cd ~/.acu/cache
-          url="https://github.com/Kron4ek/Wine-Builds/releases/download/9.22"
+          url="https://gh-proxy.org/https://github.com/Kron4ek/Wine-Builds/releases/download/9.22"
           pkg="wine-9.22-staging-amd64-wow64"
           curl -LJO \${url}/\${pkg}.tar.xz
           tar -xf \${pkg}.tar.xz
@@ -724,7 +724,7 @@ apps:
         commands: |
           echo "Installing Winetricks ..."
           cd ~/.acu/cache
-          git clone https://github.com/Winetricks/winetricks --single-branch --depth 1 --no-tags
+          git clone https://gh-proxy.org/https://github.com/Winetricks/winetricks --single-branch --depth 1 --no-tags
           cd winetricks
           sudo make install
 
@@ -914,7 +914,7 @@ apps:
           # wifi
           echo "Installing RTL8851BU WiFi Driver ..."
           cd ~/.acu/cache
-          git clone https://github.com/kwankiu/rtl8851bu.git
+          git clone https://gh-proxy.org/https://github.com/kwankiu/rtl8851bu.git
           cd rtl8851bu
           make
           sudo make install
@@ -972,7 +972,7 @@ apps:
         packages:
           - python-pip
         commands: |
-            python -m pip install https://github.com/hbiyik/agr/archive/master.zip --break-system-packages --force-reinstall
+            python -m pip install https://gh-proxy.org/https://github.com/hbiyik/agr/archive/master.zip --break-system-packages --force-reinstall
             sudo ln -s ~/.local/bin/agr /usr/local/bin/agr
 
       - package_name: gnome-terminal

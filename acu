@@ -33,7 +33,7 @@ release="0.1.6"
 #utilver=24031299
 
 # Remote Repository for update check
-remote_repo="https://github.com/kwankiu/acu"
+remote_repo="https://gh-proxy.org/https://github.com/Dawn1Ocean/acu"
 
 # update_available
 # acu uses this variable to determine whether to show the "update available" menu option
@@ -388,7 +388,7 @@ update_util() {
             sudo cp -r /usr/bin/acu /usr/bin/acu.old
         fi
         colorecho "$GREEN" "Installing / Updating $utilname ..."
-        local response_code=$(sudo curl --write-out '%{response_code}' -o /usr/bin/acu -L "https://raw.githubusercontent.com/kwankiu/acu/$remote_release/acu")
+        local response_code=$(sudo curl --write-out '%{response_code}' -o /usr/bin/acu -L "https://gh-proxy.org/https://raw.githubusercontent.com/Dawn1Ocean/acu/$remote_release/acu")
         sudo chmod +x /usr/bin/acu
         if [ "$response_code" = 200 ]; then
             local config_dir=$(dirname "$config_file")
@@ -557,7 +557,7 @@ get_ghapi_orgs() {
     ghapi_pkg_results=()
     ghapi_url_results=()
     for url in "${dgpkg_list[@]}"; do
-        ghapi_url_results+=("https://github.com/$url")
+        ghapi_url_results+=("https://gh-proxy.org/https://github.com/$url")
         selection=$(basename "$url")
         ghapi_pkg_results+=("$selection")
     done
@@ -1073,10 +1073,10 @@ fetch_repositories() {
                 ;;
             git | archive | ghorg | ghapi-orgs | ghrel | ghapi-releases)
                 if [ "$1" != "-q" ]; then
-                    if [[ "${repositories_repo_url[i]}" == "https://github.com/"* && "${repositories_repo_url[i]}" != *"https://github.com/"*"/"* ]]; then
+                    if [[ "${repositories_repo_url[i]}" == "https://gh-proxy.org/https://github.com/"* && "${repositories_repo_url[i]}" != *"https://gh-proxy.org/https://github.com/"*"/"* ]]; then
                         # Github API (Orgs/Users)
                         colorecho "$THEME" "GHORG  $NC | Looking up remote: ${repositories_repo_url[i]}"
-                    elif [[ "${repositories_repo_url[i]}" == "https://api.github.com/repos"* ]]; then
+                    elif [[ "${repositories_repo_url[i]}" == "https://gh-proxy.org/https://api.github.com/repos"* ]]; then
                         # Github API (Repository)
                         colorecho "$THEME" "GHREL  $NC | Looking up remote: ${repositories_repo_url[i]}"
                     elif [ "${repositories_repo_type[i]}" = "archive" ]; then
@@ -1088,8 +1088,8 @@ fetch_repositories() {
                     fi
                 fi
                 # Github API (Orgs/Users)
-                if [[ "${repositories_repo_url[i]}" == "https://github.com/"* && "${repositories_repo_url[i]}" != *"https://github.com/"*"/"* ]]; then
-                    local ghapi_url="https://api.github.com/orgs/$(basename ${repositories_repo_url[i]})/repos"
+                if [[ "${repositories_repo_url[i]}" == "https://gh-proxy.org/https://github.com/"* && "${repositories_repo_url[i]}" != *"https://gh-proxy.org/https://github.com/"*"/"* ]]; then
+                    local ghapi_url="https://gh-proxy.org/https://api.github.com/orgs/$(basename ${repositories_repo_url[i]})/repos"
                     get_ghapi_orgs $ghapi_url
                     #mkdir -p $HOME/.acu/cache/db
                     #local db_file="$HOME/.acu/cache/db/${repositories_repo_name[i]}.yaml"
@@ -1110,7 +1110,7 @@ fetch_repositories() {
                         colorecho "$GREEN" "INFO$NC |     Successfully fetched host (found ${#ghapi_pkg_results[@]} packages)"
                     fi
                 # Github API (Repository)
-                elif [[ "${repositories_repo_url[i]}" == "https://api.github.com/repos"* ]]; then
+                elif [[ "${repositories_repo_url[i]}" == "https://gh-proxy.org/https://api.github.com/repos"* ]]; then
                     ghrel_url+=("${repositories_repo_url[i]}")
                     ghapi_pkg_results=($(echo -e "n" | install_ghrel_packages .pkg.tar. | grep .pkg.tar.* | sed 's/\.pkg\..*//'))
                     for pkg in "${ghapi_pkg_results[@]}"; do
@@ -2101,7 +2101,7 @@ pkg_lookup_git() {
                     fi
                 done < <(find ${repositories_repo_name[i]} -type f -name PKGBUILD -exec dirname {} \; | sort -u)
                 cd $HOME
-            elif [[ "${repositories_repo_url[i]}" != "https://api.github.com/repos"* ]]; then
+            elif [[ "${repositories_repo_url[i]}" != "https://gh-proxy.org/https://api.github.com/repos"* ]]; then
                 local lookup=$(git ls-remote "${repositories_repo_url[i]}/$pkg" 2>/dev/null)
                 if [ -n "$lookup" ]; then
                     if [ -z "$repo" ]; then
@@ -3162,7 +3162,7 @@ load_config() {
         # Create Desktop Shortcut
         local desktop_shortcut_file="/usr/share/applications/acu.desktop"
         echo "Creating Desktop Shortcut and Icon ..."
-        sudo curl -L https://raw.githubusercontent.com/kwankiu/acu/$release/examples/acu.png -o /usr/share/pixmaps/acu.png
+        sudo curl -L https://gh-proxy.org/https://raw.githubusercontent.com/Dawn1Ocean/acu/$release/examples/acu.png -o /usr/share/pixmaps/acu.png
         echo -e "[Desktop Entry]\nName=$utilname\nExec=acu\nType=Application\nVersion=$release\nIcon=acu\nComment=$utilname\nCategories=System;Utility;\nTerminal=true\n" | sudo tee "$desktop_shortcut_file" >/dev/null
         # Download default configurations file
         local config_dir=$(dirname "$config_file")
@@ -3173,12 +3173,12 @@ load_config() {
         fi
         mkdir -p "$config_dir"
         mkdir -p $HOME/.acu/cache/tmp
-        response_code=$(curl --write-out '%{response_code}' -L https://raw.githubusercontent.com/kwankiu/acu/$release/config/config.yaml -o $HOME/.acu/cache/tmp/tmpdownload_config.yaml)
+        response_code=$(curl --write-out '%{response_code}' -L https://gh-proxy.org/https://raw.githubusercontent.com/Dawn1Ocean/acu/$release/config/config.yaml -o $HOME/.acu/cache/tmp/tmpdownload_config.yaml)
         if [ "$response_code" = 200 ]; then
             cp -r $HOME/.acu/cache/tmp/tmpdownload_config.yaml $HOME/.acu/config/config.yaml
             sudo rm -rf $HOME/.acu/cache/tmp/tmpdownload_config.yaml
             if [ ! -f "$config_dir/config.old" ]; then
-                response_code=$(curl --write-out '%{response_code}' -L https://raw.githubusercontent.com/kwankiu/acu/$release/examples/repo.yaml -o $HOME/.acu/cache/tmp/tmpdownload_repo.yaml)
+                response_code=$(curl --write-out '%{response_code}' -L https://gh-proxy.org/https://raw.githubusercontent.com/Dawn1Ocean/acu/$release/examples/repo.yaml -o $HOME/.acu/cache/tmp/tmpdownload_repo.yaml)
                 if [ "$response_code" = 200 ]; then
                     cp -r $HOME/.acu/cache/tmp/tmpdownload_repo.yaml $HOME/.acu/config/repo.yaml
                     sudo rm -rf $HOME/.acu/cache/tmp/tmpdownload_repo.yaml
